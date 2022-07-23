@@ -162,6 +162,13 @@ namespace ProjectPRN211.Models
                     .IsUnicode(false)
                     .HasColumnName("username");
 
+                entity.Property(e => e.Date).HasColumnType("datetime");
+
+                entity.Property(e => e.To)
+                    .HasMaxLength(150)
+                    .IsUnicode(false)
+                    .HasColumnName("to");
+
                 entity.HasOne(d => d.PidNavigation)
                     .WithMany(p => p.Comments)
                     .HasForeignKey(d => d.Pid)

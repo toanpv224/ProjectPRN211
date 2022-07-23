@@ -1,4 +1,6 @@
-﻿@using ProjectPRN211.Models;
+﻿@using Microsoft.AspNetCore.Http
+@using ProjectPRN211.Models;
+@using ProjectPRN211;
 @model List<Comment>
 <html>
 <head>
@@ -294,7 +296,7 @@
                 </ul>
                 <form class="d-flex dropdown justify-content-around" role="search" style="margin-right: 80px;">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Dropdown
+                        Hello! @(ViewBag.Account.Username)
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="#">Your Profile</a></li>
@@ -318,21 +320,21 @@
                             <span class="input-group-text" id="basic-addon1"><i class="fa fa-search"></i></span>
                             <input type="text" class="form-control" placeholder="Search..." aria-label="Username" aria-describedby="basic-addon1">
                         </div>
-
+                        
                         <div style="margin-top:20px;">
                             <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                 @foreach (Post p in ViewBag.Post)
                                 {
-                                    <button class="nav-link @(ViewBag.Post[0]==p?"active":"")" 
-                                    id="v-pills-mess-tag@(p.Pid)" 
-                                    data-bs-toggle="pill" 
-                                    data-bs-target="#v-pills-mess@(p.Pid)" 
-                                    type="button" 
-                                    role="tab" 
-                                    aria-controls="v-pills-profile" 
-                                    aria-selected="false"
-                                    onclick="scrollToBottom(myDiv@(p.Pid));"
-                                    >@p.Username</button>
+                                        <button class="nav-link @(ViewBag.Post[0]==p?"active":"")" 
+                                        id="v-pills-mess-tag@(p.Pid)" 
+                                        data-bs-toggle="pill" 
+                                        data-bs-target="#v-pills-mess@(p.Pid)" 
+                                        type="button" 
+                                        role="tab" 
+                                        aria-controls="v-pills-profile" 
+                                        aria-selected="false"
+                                        onclick="scrollToBottom(myDiv@(p.Pid));"
+                                        >@p.Username</button>
                                 }
                             </div>
                         </div>
@@ -355,7 +357,7 @@
                                         <ul class="m-b-0 scroll-custom" id="myDiv@(post.Pid)">
                                             @foreach (Comment c in post.Comments)
                                             {
-                                                if (post.Username.ToLower().Equals(c.Username.ToLower()))
+                                                if (ViewBag.Account.Username.ToLower().Equals(c.Username.ToLower()))
                                                 {
                                                     <li class="clearfix">
                                                         <div class="message-data text-right d-flex flex-row-reverse">
@@ -364,7 +366,7 @@
                                                         <div class="message other-message float-right">@c.Ccontent</div>
                                                     </li>
                                                 }
-                                                else
+                                                else if(post.Username.ToLower().Equals(c.To.ToLower()))
                                                 {
                                                     <li class="clearfix">
                                                         <div class="message-data">
@@ -375,18 +377,6 @@
                                                 }
                                                     
                                            }
-                                            <li class="clearfix">
-                                                <div class="message-data">
-                                                    <span class="message-data-time">10:12 AM, Today</span>
-                                                </div>
-                                                <div class="message my-message"></div>
-                                            </li>
-                                            <li class="clearfix">
-                                                <div class="message-data">
-                                                    <span class="message-data-time">10:15 AM, Today</span>
-                                                </div>
-                                                <div class="message my-message">Project has been already finished and I have results to show you.</div>
-                                            </li>
                                         </ul>
                                     </div>
                                     <div class="chat-message clearfix">

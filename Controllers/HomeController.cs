@@ -4,6 +4,7 @@ using ProjectPRN211.Logics;
 using System.Collections.Generic;
 using System;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace ProjectPRN211.Controllers
 {
@@ -22,30 +23,38 @@ namespace ProjectPRN211.Controllers
         }
         public IActionResult Signin(string user, string pass, string remember)
         {
-            if(remember != null)
+
+            if (remember == null)
             {
-                AccountManager accountManager = new AccountManager();
-                Account account = new Account();
-                account = accountManager.GetAcc(user, pass);
-                if (account == null)
+                remember = "0";
+            }
+            AccountManager accountManager = new AccountManager();
+            Account account = new Account();
+            account = accountManager.GetAcc(user, pass);
+            if (account == null)
+            {
+                return RedirectToAction("Home");
+            }
+            else
+            {
+                if (remember.Equals("1"))
                 {
-                    return RedirectToAction("Home");
-                }
-                else
-                {
-                    if (remember.Equals("1"))
+                    CookieOptions options = new CookieOptions();
+                    options.Expires = DateTimeOffset.Now.AddDays(30);
+                    string AccCookie = user + "," + pass;
+                    if (Request.Cookies["AccCookie"] != null)
                     {
-                        CookieOptions options = new CookieOptions();
-                        options.Expires = DateTimeOffset.Now.AddDays(30);
-                        string AccCookie = user + "," + pass;
+                        Response.Cookies.Append("AccCookie", null, options);
                         Response.Cookies.Append("AccCookie", AccCookie, options);
                     }
-                    return RedirectToAction("Chat", "Chat");
+                    else
+                    {
+                        Response.Cookies.Append("AccCookie", AccCookie, options);
+                    }
                 }
-
+                HttpContext.Session.SetString("account", JsonConvert.SerializeObject(account));
+                return RedirectToAction("Chat", "Chat");
             }
-
-            return RedirectToAction("Chat", "Chat");
         }
         public IActionResult Signup(string user, string pass, string repass)
         {
