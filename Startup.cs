@@ -35,7 +35,7 @@ namespace ProjectPRN211
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Chat}/{action=Home}"
+                    pattern: "{controller=Home}/{action=Home}"
                     );
             });
         }

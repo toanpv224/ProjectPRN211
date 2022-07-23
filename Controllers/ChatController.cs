@@ -1,25 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using ProjectPRN211.Models;
+using ProjectPRN211.Logics;
+using System.Collections.Generic;
 
 namespace ProjectPRN211.Controllers
 {
     public class ChatController : Controller
     {
-        public IActionResult Home()
-        {
-            return View();
-        }
+        
 
         public IActionResult Chat()
         {
-            return View();
-        }
-        public IActionResult Login()
-        {
-            return View();
+            ChatManager chatManager = new ChatManager();
 
-        }public IActionResult Register()
-        {
+            List<Post> listPost = new List<Post>();
+            List<Comment> commentList = new List<Comment>();
+
+            listPost = chatManager.GetPort();
+            commentList = chatManager.GetComment();
+            
+            ViewBag.Post = listPost;
+            ViewBag.Comment = commentList;
+
             return View();
         }
+       
     }
 }

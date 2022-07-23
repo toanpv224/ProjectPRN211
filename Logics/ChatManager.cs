@@ -16,13 +16,19 @@ namespace ProjectPRN211.Logics
         public List<Post> GetPort()
         {
             List<Post> postList = new List<Post>();
-            List<Account> accountList = new List<Account>();
-            List<Comment> commentList = new List<Comment>();
             postList = _context.Posts.ToList();
-            accountList = _context.Accounts.ToList();
+            List<Comment> commentList = new List<Comment>();
             commentList = _context.Comments.ToList();
-            
-            return from ;
+            foreach (Post post in postList)
+            {
+                post.Comments = commentList.Where(commentList => commentList.Pid == post.Pid).ToList();
+            }
+            return postList;
+        }public List<Comment> GetComment()
+        {
+            List<Comment> commentList = new List<Comment>();
+            commentList = _context.Comments.ToList();
+            return commentList;
         }
     }
 }
